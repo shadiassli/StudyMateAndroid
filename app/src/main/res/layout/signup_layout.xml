@@ -82,21 +82,22 @@
         android:background="@color/white_greyish" />
 
     <EditText
-        android:id="@+id/location"
+        android:id="@+id/birthdate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/location"
+        android:drawableLeft="@drawable/birthdate"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:hint="@string/location"
+        android:hint="@string/birthdate"
         android:inputType="textCapWords"
         android:padding="10dp"
         android:singleLine="true"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        />
 
     <View
         android:layout_width="fill_parent"

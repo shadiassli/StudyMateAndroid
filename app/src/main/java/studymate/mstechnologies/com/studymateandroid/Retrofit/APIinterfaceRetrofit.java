@@ -7,6 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import studymate.mstechnologies.com.studymateandroid.Models.Login;
+import studymate.mstechnologies.com.studymateandroid.Models.Register;
 
 /**
  * Created by xboxp on 3/4/2018.
@@ -14,10 +15,12 @@ import studymate.mstechnologies.com.studymateandroid.Models.Login;
 
 public interface APIinterfaceRetrofit
 {
-//  @POST("AddNewUsera") Call<String> addNewUser(@Body Register register);
 
   @POST("loginUser")
   Call<Login> LoginUser(@Body Login login);
+
+  @POST("addNewUser")
+  Call<String> Register(@Body Register register);
 
  /* @GET("getProjectsDetails")
   Call<ArrayList<Project>> getProjects();

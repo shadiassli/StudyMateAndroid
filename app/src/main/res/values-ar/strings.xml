@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">StudyMateAndroid</string>
+  <string name="action_settings">الاعدادات</string>
+  <string name="email">البريد الالكتروني</string>
+  <string name="passowrd">كلمة السر</string>
+  <string name="login">تسجيل الدخول</string>
+  <string name="show_pwd">اظهار كلمة السر</string>
+  <string name="hide_pwd">اخفاء كلمة السر</string>
+  <string name="forgot">نسيت كلمة السر</string>
+  <string name="newUser">هل انت عضو جديد</string>
+  <string name="fullName">الاسم الكامل</string>
+  <string name="mobileNumber">رقم الهاتف</string>
+  <string name="location">الموقع</string>
+</resources>
