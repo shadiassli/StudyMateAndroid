@@ -34,29 +34,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
+       try {
+         SharedPreferences prefs = this.getSharedPreferences(Utils.Login_Preferences, Context.MODE_PRIVATE);
+         String loginEmail = prefs.getString("Email", "");
+         int loginId = prefs.getInt("Id", -1);
+         int loginType = prefs.getInt("Type", 0);
+         int firstLogin = prefs.getInt("First_Login", 1);
+         //IF USERS ALREADY HAS A COMPLETED HIS PROFILE
+         int completedProfile = prefs.getInt("Profile_Completed", 0);
+         if (completedProfile == 1) {
+           Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+           intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+           startActivity(intent);
+         }
+         if (loginEmail.length() > 0 && loginId != -1) {
+           if (firstLogin == 1) {
+             Intent goToProfileEdit = new Intent(MainActivity.this, EditProfile.class);
+             goToProfileEdit.putExtra("Id", loginId);
+             goToProfileEdit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+             startActivity(goToProfileEdit);
+             MDToast.makeText(getApplicationContext(), getResources().getString(R.string.CompleteProfile),
+                 MDToast.LENGTH_LONG, MDToast.TYPE_INFO).show();
+           }
+         } else {
+           //SHOW PROMPT FOR LOGIN DETAILS
+         }
+       }
+       catch (Exception e)
+       {
 
-      SharedPreferences prefs = this.getSharedPreferences(Utils.Login_Preferences, Context.MODE_PRIVATE);
-
-      String loginEmail = prefs.getString("Email", "");
-      int loginId = prefs.getInt("Id", -1);
-      int loginType = prefs.getInt("Type",0);
-      int firstLogin = prefs.getInt("First_Login",1);
-      if (loginEmail.length()>0 && loginId!=-1)
-      {
-        if(firstLogin==1)
-        {
-          Intent goToProfileEdit = new Intent(MainActivity.this,EditProfile.class);
-          goToProfileEdit.putExtra("Id",loginId);
-          goToProfileEdit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-          startActivity(goToProfileEdit);
-          MDToast.makeText(getApplicationContext(),getResources().getString(R.string.CompleteProfile),MDToast.LENGTH_LONG,MDToast.TYPE_INFO).show();
-        }
-
-      }
-      else
-      {
-        //SHOW PROMPT FOR LOGIN DETAILS
-      }
+       }
 
       // If savedinstnacestate is null then replace login fragment
       if (savedInstanceState == null) {

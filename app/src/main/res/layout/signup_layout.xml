@@ -81,13 +81,13 @@
         android:layout_height="1px"
         android:background="@color/white_greyish" />
 
-    <EditText
+    <ImageButton
         android:id="@+id/birthdate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/birthdate"
+        android:src="@drawable/birthdate"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:hint="@string/birthdate"

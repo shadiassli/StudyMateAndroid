@@ -211,6 +211,7 @@ public class Login_Fragment extends Fragment implements OnClickListener {
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("Email", getEmailId);
             editor.putInt("Type",response.body().getType());
+						editor.putInt("Profile_Completed",0);
             editor.putInt("Id",response.body().getId());
 
             editor.commit();

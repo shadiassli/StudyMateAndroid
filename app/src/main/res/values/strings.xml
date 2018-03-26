@@ -1,38 +1,56 @@
 <resources>
-    <string name="app_name">StudyMateAndroid</string>
+  <string name="app_name">StudyMateAndroid</string>
+  <string name="hello_world">Hello world!</string>
+  <string name="action_settings">Settings</string>
+  <string name="email">Email</string>
+  <string name="passowrd">Password</string>
+  <string name="login">LOGIN</string>
+  <string name="show_pwd">Show Password</string>
+  <string name="hide_pwd">Hide Password</string>
+  <string name="forgot">Forgot password?</string>
+  <string name="closebutton">Close Button for Activity</string>
+  <string name="newUser">Not a Member yet? Sign Up here.</string>
+  <string name="fullName">Full Name</string>
+  <string name="mobileNumber">Mobile Number</string>
+  <string name="birthdate">Birthdate</string>
+  <string name="confirmPassword">Confirm Password</string>
+  <string name="terms_conditions">By clicking SignUp you agree all the Terms and Conditions.</string>
+  <string name="signUp">SIGN UP</string>
+  <string name="already_user">Already have Account? Login here.</string>
+  <string name="registered_emailid">Please enter your Registered Email Id below:</string>
+  <string name="submit">SUBMIT</string>
+  <string name="back">BACK</string>
+  <string name="CompleteProfile">Please complete your profile</string>
+  <string name="Department">Department</string>
+  <string name="Major">Major</string>
+  <string name="finish">Finish</string>
+  <string name="SelectDepartment">Please select a deprtment</string>
+  <string name="SelectMajor">Please select a major</string>
+  <!-- ERROR MESSAGES-->
+  <string name="NoSuchUser">Such user does not exist</string>
+  <string name="NetworkConnectionFailure">Something went wrong please try again later</string>
+  <string name="InvalidEmail">Your Email Id is Invalid</string>
+  <string name="Enterbothcredentials">Enter both credentials</string>
+  <string name="AllFieldsRequired">All fields are required</string>
+  <string name="PasswordsDontMatch">Both passwords do not match</string>
+  <string name="SelectTermsAndConditions">Please select Terms and Conditions</string>
+  <string name="UserAlreadyExists">A user with such email already exist</string>
+  <string name="ChooseFromGallary">Choose From Gallary</string>
+  <string name="TakeAPic">Take A Picture</string>
+  <string name="SelectImage">Select Image</string>
+  <string name="allcredintialRequired">All Credentials Are Required</string>
+  <string name="CompleteActionUsing">Complete Action Using</string>
+  <string name="Cancel">Cancel</string>
+  <string name="cameraPermissionFailed">Camera Permission Required</string>
+  <!-- SUCCESS MESSAGES -->
+  <string name="HoldOn">Please hold on</string>
+  <string name="nav_home">Home</string>
+  <string name="nav_profile">Profile</string>
+  <string name="nav_search">Search</string>
+  <string name="nav_ask">Ask</string>
 
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="email">Email</string>
-    <string name="passowrd">Password</string>
-    <string name="login">LOGIN</string>
-    <string name="show_pwd">Show Password</string>
-    <string name="hide_pwd">Hide Password</string>
-    <string name="forgot">Forgot password?</string>
-    <string name="closebutton">Close Button for Activity</string>
-    <string name="newUser">Not a Member yet? Sign Up here.</string>
-    <string name="fullName">Full Name</string>
-    <string name="mobileNumber">Mobile Number</string>
-    <string name="birthdate">Birthdate</string>
-    <string name="confirmPassword">Confirm Password</string>
-    <string name="terms_conditions">By clicking SignUp you agree all the Terms and Conditions.</string>
-    <string name="signUp">SIGN UP</string>
-    <string name="already_user">Already have Account? Login here.</string>
-    <string name="registered_emailid">Please enter your Registered Email Id below:</string>
-    <string name="submit">SUBMIT</string>
-    <string name="back">BACK</string>
-    <string name="CompleteProfile">Please Complete your Profile</string>
-
-     <!-- ERROR MESSAGES-->
-     <string name="NoSuchUser">Such user does not exist</string>
-     <string name="NetworkConnectionFailure">Something went wrong please try again later</string>
-     <string name="InvalidEmail">Your Email Id is Invalid</string>
-     <string name="Enterbothcredentials">Enter both credentials</string>
-     <string name="AllFieldsRequired">All fields are required</string>
-     <string name="PasswordsDontMatch">Both passwords do not match</string>
-     <string name="SelectTermsAndConditions">Please select Terms and Conditions</string>
-     <string name="UserAlreadyExists">A user with such email already exist</string>
-     <!-- SUCCESS MESSAGES -->
-      <string name="HoldOn">Please hold on</string>
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="PleaseWait">Please wait a second while we update your profile</string>
+  <string name="SomethingWentWrong">Something went wrong please try again later</string>
 </resources>

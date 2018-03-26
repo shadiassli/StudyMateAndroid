@@ -1,17 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     tools:context="studymate.mstechnologies.com.studymateandroid.Activities.EditProfile"
+    android:id="@+id/ep_SwipeRefreshLayout"
     >
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
-      android:textSize="28sp"
-      android:text="Welcome To Edit Profile"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="30dp"
+      android:text="@string/CompleteProfile"
+      android:textSize="20dp"
+      android:textStyle="bold|italic"
+      android:id="@+id/editProfileText"
+      android:textColor="@color/white"
       />
 
-</RelativeLayout>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@id/editProfileText"
+      android:layout_marginTop="18dp"
+      android:orientation="vertical"
+      android:layout_centerInParent="true"
+      android:layout_above="@id/ep_finishBtn"
+      >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ep_profileImage"
+        android:layout_width="146dp"
+        android:layout_height="146dp"
+        android:src="@drawable/ic_default_avatar"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+
+        />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
+    android:layout_marginTop="50dp"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Department"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/departmentSpinner"
+        android:layout_marginStart="8dp"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        android:saveEnabled="true"
+        />
+</LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+
+        >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Major"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/majorSpinner"
+        android:layout_marginStart="8dp"
+        android:layout_gravity="center"
+        />
+  </LinearLayout>
+  </LinearLayout>
+
+
+  <Button
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:text="@string/finish"
+      android:id="@+id/ep_finishBtn"
+      android:background="@color/background_color"
+      android:textColor="@color/white"
+      />
+  </RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

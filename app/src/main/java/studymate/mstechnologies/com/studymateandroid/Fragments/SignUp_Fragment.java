@@ -1,10 +1,12 @@
 package studymate.mstechnologies.com.studymateandroid.Fragments;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,10 +15,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.valdesekamdem.library.mdtoast.MDToast;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import retrofit2.Call;
@@ -32,13 +37,17 @@ import studymate.mstechnologies.com.studymateandroid.Retrofit.APIinterfaceRetrof
 import studymate.mstechnologies.com.studymateandroid.Utils.CustomToast;
 import studymate.mstechnologies.com.studymateandroid.Utils.Utils;
 
-public class SignUp_Fragment extends Fragment implements OnClickListener {
-	private static View view;
-	private static EditText fullName, emailId, mobileNumber, birthdate,
+public class SignUp_Fragment extends Fragment implements OnClickListener,DatePickerDialog.OnDateSetListener {
+
+  private int day,month,year , day_final,month_final,year_final;
+  private String finalBdate;
+	private  View view;
+	private  EditText fullName, emailId, mobileNumber,
 			password, confirmPassword;
-	private static TextView login;
-	private static Button signUpButton;
-	private static CheckBox terms_conditions;
+	private   ImageButton birthdate;
+	private  TextView login;
+	private  Button signUpButton;
+	private  CheckBox terms_conditions;
 
 	public SignUp_Fragment() {
 
@@ -58,7 +67,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
 		fullName = (EditText) view.findViewById(R.id.fullName);
 		emailId = (EditText) view.findViewById(R.id.userEmailId);
 		mobileNumber = (EditText) view.findViewById(R.id.mobileNumber);
-		birthdate = (EditText) view.findViewById(R.id.birthdate);
+		birthdate = (ImageButton) view.findViewById(R.id.birthdate);
 		password = (EditText) view.findViewById(R.id.password);
 		confirmPassword = (EditText) view.findViewById(R.id.confirmPassword);
 		signUpButton = (Button) view.findViewById(R.id.signUpBtn);
@@ -77,10 +86,13 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
 		}
 	}
 
+
+
 	// Set Listeners
 	private void setListeners() {
 		signUpButton.setOnClickListener(this);
 		login.setOnClickListener(this);
+		birthdate.setOnClickListener(this);
 	}
 
 	@Override
@@ -97,6 +109,18 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
 			// Replace login fragment
 			new MainActivity().replaceLoginFragment();
 			break;
+
+      case R.id.birthdate: {
+        Calendar cal = Calendar.getInstance();
+        year = cal.get(Calendar.YEAR);
+        month = cal.get(Calendar.MONTH);
+        day = cal.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog =
+            new DatePickerDialog(getActivity(), SignUp_Fragment.this, year, month, day);
+        datePickerDialog.show();
+      }
+      break;
 		}
 
 	}
@@ -108,7 +132,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
 		String getFullName = fullName.getText().toString();
 		final String getEmailId = emailId.getText().toString();
 		String getMobileNumber = mobileNumber.getText().toString();
-		String getBirthdate = birthdate.getText().toString();
+		//String getBirthdate = birthdate.getText().toString();
 		String getPassword = password.getText().toString();
 		String getConfirmPassword = confirmPassword.getText().toString();
 
@@ -120,7 +144,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
 		if (getFullName.equals("") || getFullName.length() == 0
 				|| getEmailId.equals("") || getEmailId.length() == 0
 				|| getMobileNumber.equals("") || getMobileNumber.length() == 0
-				|| getBirthdate.equals("") || getBirthdate.length() == 0
+				|| finalBdate.equals("") || finalBdate.length() == 0
 				|| getPassword.equals("") || getPassword.length() == 0
 				|| getConfirmPassword.equals("")
 				|| getConfirmPassword.length() == 0)
@@ -146,7 +170,8 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
 		// Else do signup or do your stuff
 		else
 		{
-			Register register = new Register(getFullName,getEmailId,getPassword,getMobileNumber,getBirthdate);
+
+			Register register = new Register(getFullName,getEmailId,getPassword,getMobileNumber,finalBdate);
 			Retrofit retrofit = APIClientRetrofit.getClient();
 			APIinterfaceRetrofit _register = retrofit.create(APIinterfaceRetrofit.class);
 			Call<String> registerCall = _register.Register(register);
@@ -164,12 +189,15 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
 					editor.putInt("Type",0);
 					editor.putInt("Id",Integer.parseInt(response.body()));
 					editor.putInt("First_Login",1);
-					editor.commit();
+					editor.putInt("Profile_Completed",0);
+					editor.apply();
 
-					Intent goToProfileEdit = new Intent(getActivity(), EditProfile.class);
-					goToProfileEdit.putExtra("Id",response.body());
-					goToProfileEdit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-					startActivity(goToProfileEdit);
+          if(response.body()!=null) {
+            Intent goToProfileEdit = new Intent(getActivity(), EditProfile.class);
+            goToProfileEdit.putExtra("Id", response.body());
+            goToProfileEdit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(goToProfileEdit);
+          }
 				}
 				else if(response.code()==302)
 					{
@@ -186,4 +214,12 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
 		}
 
 	}
+
+  @Override public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
+  {
+    year_final = year;
+    month_final = month+1;
+    day_final = dayOfMonth;
+    finalBdate = day_final+"-"+month_final+"-"+year_final;
+  }
 }

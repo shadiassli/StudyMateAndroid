@@ -11,4 +11,17 @@
     <color name="white_greyish">#EEEEEE</color>
     <color name="button_selectorcolor">#9E9E9E</color>
 
+    <color name="refresh">#008000</color>
+    <color name="refresh1">#008080</color>
+    <color name="refresh2">#800080</color>
+
+
+    <color name="black2">#000000</color>
+    <color name="lightBlue">#4DB6AC</color>
+
+    <color name="x">#757575</color>
+    <color name="y">#EC407A</color>
+    
+    <color name="transWhite">#80ffffff</color>
+    
 </resources>
