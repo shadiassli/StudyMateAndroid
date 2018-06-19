@@ -26,6 +26,9 @@
   <string name="finish">Finish</string>
   <string name="SelectDepartment">Please select a deprtment</string>
   <string name="SelectMajor">Please select a major</string>
+  <string name="answer">Answers</string>
+  <string name="asked">Asked</string>
+  <string name="emailSent">A temorary password was sent to your email</string>
   <!-- ERROR MESSAGES-->
   <string name="NoSuchUser">Such user does not exist</string>
   <string name="NetworkConnectionFailure">Something went wrong please try again later</string>
@@ -48,9 +51,25 @@
   <string name="nav_profile">Profile</string>
   <string name="nav_search">Search</string>
   <string name="nav_ask">Ask</string>
-
+  <string name="ans_added">Your answer was successfully posted</string>
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="PleaseWait">Please wait a second while we update your profile</string>
   <string name="SomethingWentWrong">Something went wrong please try again later</string>
+  <string name="post">POST</string>
+  <string name="type_your_question_here">Type Your Question Here</string>
+  <string name="question_lenght_error">Question text must be at least 10 characters</string>
+  <string name="type_down_an_answer">Type Down An Answer</string>
+  <string name="Write_down_an_ans_err">write down an answer</string>
+  <string name="search">Search</string>
+  <string name="studymate_user">StudyMate User</string>
+  <string name="answers">Answers</string>
+  <string name="questions">Questions</string>
+  <string name="edit">EDIT</string>
+  <string name="phone_number">Phone Number</string>
+  <string name="user_name">USER NAME</string>
+  <string name="save">Save</string>
+  <string name="delete">DELETE</string>
+  <string name="questionEditted">Question was successfully edited</string>
+  <string name="questionDeleted">Question Successfully Deleted</string>
 </resources>

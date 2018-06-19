@@ -36,9 +36,9 @@ public class HomeActivity extends AppCompatActivity {
 
         switch (item.getItemId())
         {
-          case R.id.nav_home_item:{mHomeNav.setItemBackgroundResource(R.color.colorPrimary); setFragment(homeFragment); return true;}
-          case R.id.nav_profile_item: {mHomeNav.setItemBackgroundResource(R.color.colorPrimary); setFragment(profileFragment); return true;}
-          case R.id.nav_search_item: {mHomeNav.setItemBackgroundResource(R.color.colorPrimary); setFragment(searchFragment); return true;}
+          case R.id.nav_home_item:{setFragment(homeFragment); return true;}
+          case R.id.nav_profile_item: { setFragment(profileFragment); return true;}
+          case R.id.nav_search_item: { setFragment(searchFragment); return true;}
           default:return false;
         }
       }
@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
   private void setFragment(Fragment fragment)
   {
     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-    fragmentTransaction.replace(R.id.home_main_frame,fragment);
+    fragmentTransaction.replace(R.id.home_main_frame,fragment).addToBackStack(fragment.getTag());
     fragmentTransaction.commit();
   }
 

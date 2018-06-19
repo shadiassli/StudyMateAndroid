@@ -1,25 +1,18 @@
 package studymate.mstechnologies.com.studymateandroid.Activities;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,8 +21,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
+import com.github.ybq.android.spinkit.style.FoldingCube;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.valdesekamdem.library.mdtoast.MDToast;
@@ -41,13 +37,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import studymate.mstechnologies.com.studymateandroid.Models.CompleteProfile;
 import studymate.mstechnologies.com.studymateandroid.R;
 import studymate.mstechnologies.com.studymateandroid.Retrofit.APIClientRetrofit;
 import studymate.mstechnologies.com.studymateandroid.Retrofit.APIinterfaceRetrofit;
+import studymate.mstechnologies.com.studymateandroid.Retrofit.Requests;
 import studymate.mstechnologies.com.studymateandroid.Utils.Utils;
 
-public class EditProfile extends AppCompatActivity {
+public class CompleteProfileActivity extends AppCompatActivity {
 
   //WIDGETS
   private Spinner departmentsSpinner,majorsSpinner;
@@ -58,15 +54,17 @@ public class EditProfile extends AppCompatActivity {
   Retrofit retrofit = APIClientRetrofit.getClient();
   ArrayList<String> departmentsList;
   ArrayList<String> majorsList;
-  CompleteProfile cp;
+  studymate.mstechnologies.com.studymateandroid.Models.CompleteProfile cp;
+  Requests requests ;
   private static final int GALLERY_REQUEST = 2;
   private static final int CAMETA_REQUEST = 1;
 
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_edit_profile);
+    setContentView(R.layout.activity_complete_profile);
     WidgetsInit();
+    cp=new studymate.mstechnologies.com.studymateandroid.Models.CompleteProfile();
     VariablesInit();
     LoadDepartments();
     ClickListeners();
@@ -74,6 +72,9 @@ public class EditProfile extends AppCompatActivity {
 
   private void LoadDepartments()
   {
+
+
+
     final  APIinterfaceRetrofit getDepartments = retrofit.create(APIinterfaceRetrofit.class);
     Call<ArrayList<String>> getDepartmentsCall = getDepartments.getDepartments();
     getDepartmentsCall.enqueue(new Callback<ArrayList<String>>() {
@@ -81,18 +82,21 @@ public class EditProfile extends AppCompatActivity {
       public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
         if (response.code()==200)
         {
-          departmentsList = response.body();
-          ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditProfile.this, android.R.layout.simple_spinner_item,  departmentsList);
+          departmentsList=response.body();
+          ArrayAdapter<String> adapter = new ArrayAdapter<String>(CompleteProfileActivity.this, android.R.layout.simple_spinner_item,  departmentsList);
           adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
           departmentsSpinner.setAdapter(adapter);
+
         }
       }
 
       @Override public void onFailure(Call<ArrayList<String>> call, Throwable t) {
-        MDToast.makeText(getApplicationContext(),getResources().getString(R.string.SomethingWentWrong),Toast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
+        MDToast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.SomethingWentWrong),Toast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
       }
     });
+
   }
+
 
   private void VariablesInit()
   {
@@ -100,9 +104,10 @@ public class EditProfile extends AppCompatActivity {
   majorsList = new ArrayList<>();
   SharedPreferences prefs = this.getSharedPreferences(Utils.Login_Preferences, Context.MODE_PRIVATE);
   int id = prefs.getInt("Id",-1);
-  cp=new CompleteProfile();
+
   cp.setId(id);
   cp.setMajor("");
+  requests= new Requests(getApplicationContext());
 
   }
 
@@ -129,36 +134,50 @@ public class EditProfile extends AppCompatActivity {
     });
     finishBtn.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
+
+        final ProgressBar progressBar = (ProgressBar)findViewById(R.id.ep_spin_kit_pb);
+        FoldingCube foldingCube = new FoldingCube();
+        progressBar.setIndeterminateDrawable(foldingCube);
+        progressBar.setVisibility(View.VISIBLE);
              Bitmap bitmap = ((BitmapDrawable) profileImagev.getDrawable()).getBitmap();
              ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
              bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
              byte[] imageInByte = baos.toByteArray();
              Log.v("ARRAY BYTE LENGTH", imageInByte.length + "");
              cp.setImage(imageInByte);
 
-        if(cp.getId() !=-1 && !cp.getMajor().equals(""))
+        if(cp.getId() !=-1 && !cp.getMajor().isEmpty())
         {
-          final APIinterfaceRetrofit updateProfile = retrofit.create(APIinterfaceRetrofit.class);
+          progressBar.setVisibility(View.VISIBLE);
+          APIinterfaceRetrofit updateProfile = retrofit.create(APIinterfaceRetrofit.class);
           Call<String> updateProfileCall = updateProfile.updateProfile(cp);
           updateProfileCall.enqueue(new Callback<String>() {
             @Override public void onResponse(Call<String> call, Response<String> response) {
-              if (response.code()==200)
+              if(response.code()==200)
               {
 
-                Intent homeIntent = new Intent(EditProfile.this,HomeActivity.class);
-                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                getSharedPreferences(Utils.Login_Preferences,MODE_PRIVATE).edit().putInt("First_Login",0).apply();
+                Intent homeIntent = new Intent(CompleteProfileActivity.this,HomeActivity.class);
                 startActivity(homeIntent);
+                progressBar.setVisibility(View.INVISIBLE);
+                finish();
+              }
+              else
+              {
+                Toast.makeText(CompleteProfileActivity.this, response.code()+"", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.INVISIBLE);
               }
             }
 
             @Override public void onFailure(Call<String> call, Throwable t) {
-              Log.e("Edit Profile : " , t.getMessage());
+              MDToast.makeText(getApplicationContext(),getResources().getString(R.string.SomethingWentWrong),MDToast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
             }
           });
         }
         else
         {
+          progressBar.setVisibility(View.INVISIBLE);
           MDToast.makeText(getApplicationContext(),getResources().getString(R.string.SelectMajor),Toast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
         }
         try {
@@ -166,7 +185,7 @@ public class EditProfile extends AppCompatActivity {
         }
         catch (IOException e)
         {
-          Log.d("Edit Profile : " , e.getMessage());
+          Log.d("Complete Profile : " , e.getMessage());
         }
       }
     });
@@ -180,34 +199,43 @@ public class EditProfile extends AppCompatActivity {
 
   private void LoadMajors(String selectedDep)
   {
-   final APIinterfaceRetrofit  getMajors = retrofit.create(APIinterfaceRetrofit.class);
-   Call<ArrayList<String>> getMajorsCall = getMajors.getMajors(selectedDep);
-   getMajorsCall.enqueue(new Callback<ArrayList<String>>() {
-     @Override
-     public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
-       if (response.code()==200)
-       {
-         majorsList=response.body();
-         ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditProfile.this, android.R.layout.simple_spinner_item, majorsList);
-         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-         majorsSpinner.setAdapter(adapter);
 
-       }
-     }
 
-     @Override public void onFailure(Call<ArrayList<String>> call, Throwable t)
-     {
-       MDToast.makeText(getApplicationContext(),getResources().getString(R.string.SomethingWentWrong),Toast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
-     }
-   });
+
+
+
+    final APIinterfaceRetrofit  getMajors = retrofit.create(APIinterfaceRetrofit.class);
+    Call<ArrayList<String>> getMajorsCall = getMajors.getMajors(selectedDep);
+    getMajorsCall.enqueue(new Callback<ArrayList<String>>() {
+      @Override
+      public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
+        if (response.code()==200)
+        {
+          majorsList=response.body();
+          ArrayAdapter<String> adapter = new ArrayAdapter<String>(CompleteProfileActivity.this, android.R.layout.simple_spinner_item, majorsList);
+          adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+          majorsSpinner.setAdapter(adapter);
+
+        }
+      }
+
+      @Override public void onFailure(Call<ArrayList<String>> call, Throwable t)
+      {
+        MDToast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.SomethingWentWrong),
+            Toast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
+      }
+    });
+
+
+
   }
 
   private void WidgetsInit()
   {
     departmentsSpinner=(Spinner)findViewById(R.id.departmentSpinner);
     majorsSpinner = (Spinner)findViewById(R.id.majorSpinner);
-    profileImagev = (CircleImageView)findViewById(R.id.ep_profileImage);
-    finishBtn = (Button)findViewById(R.id.ep_finishBtn);
+    profileImagev = (CircleImageView)findViewById(R.id.cp_profileImage);
+    finishBtn = (Button)findViewById(R.id.cp_finishBtn);
 
 
   }
@@ -269,7 +297,7 @@ public class EditProfile extends AppCompatActivity {
   private void ProfilePicEvent()
   {
     String[] ways = new String[]{getResources().getString(R.string.TakeAPic),getResources().getString(R.string.ChooseFromGallary),getResources().getString(R.string.Cancel)};
-    AlertDialog.Builder builder = new AlertDialog.Builder(EditProfile.this);
+    AlertDialog.Builder builder = new AlertDialog.Builder(CompleteProfileActivity.this);
     builder.setTitle(getResources().getString(R.string.SelectImage));
     builder.setItems(ways, new DialogInterface.OnClickListener() {
       @RequiresApi(api = Build.VERSION_CODES.M) @Override public void onClick(DialogInterface dialog, int which) {

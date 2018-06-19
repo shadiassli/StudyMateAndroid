@@ -7,21 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 import com.valdesekamdem.library.mdtoast.MDToast;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 import studymate.mstechnologies.com.studymateandroid.Fragments.Login_Fragment;
-import studymate.mstechnologies.com.studymateandroid.Models.Login;
 import studymate.mstechnologies.com.studymateandroid.R;
-import studymate.mstechnologies.com.studymateandroid.Retrofit.APIClientRetrofit;
-import studymate.mstechnologies.com.studymateandroid.Retrofit.APIinterfaceRetrofit;
 import studymate.mstechnologies.com.studymateandroid.Utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
          String loginEmail = prefs.getString("Email", "");
          int loginId = prefs.getInt("Id", -1);
          int loginType = prefs.getInt("Type", 0);
-         int firstLogin = prefs.getInt("First_Login", 1);
-         //IF USERS ALREADY HAS A COMPLETED HIS PROFILE
+         int firstLogin = prefs.getInt("First_Login", -1);
+         //IF USER ALREADY HAS COMPLETED HIS PROFILE
          int completedProfile = prefs.getInt("Profile_Completed", 0);
          if (completedProfile == 1) {
            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
@@ -49,12 +37,19 @@ public class MainActivity extends AppCompatActivity {
          }
          if (loginEmail.length() > 0 && loginId != -1) {
            if (firstLogin == 1) {
-             Intent goToProfileEdit = new Intent(MainActivity.this, EditProfile.class);
+             Intent goToProfileEdit = new Intent(MainActivity.this, CompleteProfileActivity.class);
              goToProfileEdit.putExtra("Id", loginId);
              goToProfileEdit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
              startActivity(goToProfileEdit);
              MDToast.makeText(getApplicationContext(), getResources().getString(R.string.CompleteProfile),
                  MDToast.LENGTH_LONG, MDToast.TYPE_INFO).show();
+           }
+           else
+           {
+             Intent homeIntent = new Intent(MainActivity.this,HomeActivity.class);
+             homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+             homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+             startActivity(homeIntent);
            }
          } else {
            //SHOW PROMPT FOR LOGIN DETAILS

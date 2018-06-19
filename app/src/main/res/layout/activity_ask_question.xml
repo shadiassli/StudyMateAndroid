@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="studymate.mstechnologies.com.studymateandroid.Activities.askQuestionActivity"
+    android:background="@drawable/bg_gradiant"
+    >
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:inputType="textAutoCorrect|textMultiLine"
+    android:id="@+id/etQuestiontxt"
+    android:layout_centerInParent="true"
+    android:hint="@string/type_your_question_here"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    />
+  <Button
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/addQuestionFinishBtn"
+      android:layout_alignParentBottom="true"
+      android:text="@string/post"
+      android:background="@drawable/rounded_corner_button"
+      android:layout_margin="8dp"
+      />
+</RelativeLayout>

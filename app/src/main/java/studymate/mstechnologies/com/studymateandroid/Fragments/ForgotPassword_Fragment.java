@@ -4,17 +4,29 @@ import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.github.ybq.android.spinkit.style.FoldingCube;
+import com.valdesekamdem.library.mdtoast.MDToast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import studymate.mstechnologies.com.studymateandroid.Activities.MainActivity;
 import studymate.mstechnologies.com.studymateandroid.R;
+import studymate.mstechnologies.com.studymateandroid.Retrofit.APIClientRetrofit;
+import studymate.mstechnologies.com.studymateandroid.Retrofit.APIinterfaceRetrofit;
 import studymate.mstechnologies.com.studymateandroid.Utils.CustomToast;
 import studymate.mstechnologies.com.studymateandroid.Utils.Utils;
 
@@ -23,7 +35,9 @@ public class ForgotPassword_Fragment extends Fragment implements OnClickListener
 
 	private static EditText emailId;
 	private static TextView submit, back;
-
+	private ProgressBar progressBar;
+  Retrofit retrofit = APIClientRetrofit.getClient();
+	private FragmentManager fragmentManager;
 	public ForgotPassword_Fragment() {
 
 	}
@@ -31,6 +45,7 @@ public class ForgotPassword_Fragment extends Fragment implements OnClickListener
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		fragmentManager = getActivity().getSupportFragmentManager();
 		view = inflater.inflate(R.layout.forgotpassword_layout, container,
 				false);
 		initViews();
@@ -40,6 +55,7 @@ public class ForgotPassword_Fragment extends Fragment implements OnClickListener
 
 	// Initialize the views
 	private void initViews() {
+		progressBar = (ProgressBar)view.findViewById(R.id.res_pass_spin_kit_pb);
 		emailId = (EditText) view.findViewById(R.id.registered_emailid);
 		submit = (TextView) view.findViewById(R.id.forgot_button);
 		back = (TextView) view.findViewById(R.id.backToLoginBtn);
@@ -105,7 +121,35 @@ public class ForgotPassword_Fragment extends Fragment implements OnClickListener
 
 		// Else submit email id and fetch passwod or do your stuff
 		else
-			Toast.makeText(getActivity(), "Get Forgot Password.",
-					Toast.LENGTH_SHORT).show();
+		{
+						FoldingCube fc = new FoldingCube();
+			progressBar.setIndeterminateDrawable(fc);
+			progressBar.setVisibility(View.VISIBLE);
+			APIinterfaceRetrofit forgotPassword = retrofit.create(APIinterfaceRetrofit.class);
+			Call<String> forgotPasswordCall = forgotPassword.forgotPassword(emailId.getText().toString().trim());
+			forgotPasswordCall.enqueue(new Callback<String>() {
+				@Override public void onResponse(Call<String> call, Response<String> response) {
+					Toast.makeText(getContext(), response.code()+"", Toast.LENGTH_SHORT).show();
+
+					Log.d("FORGOT PASSWORD CODE",response.code()+"");
+					if (response.code() == 200)
+					{
+						progressBar.setVisibility(View.INVISIBLE);
+						MDToast.makeText(getContext(),getResources().getString(R.string.emailSent),MDToast.LENGTH_LONG,MDToast.TYPE_SUCCESS).show();
+						fragmentManager
+								.beginTransaction()
+								.setCustomAnimations(R.anim.left_enter, R.anim.right_out)
+								.replace(R.id.frameContainer, new Login_Fragment(),
+										Utils.Login_Fragment).commit();
+					}
+
+				}
+
+				@Override public void onFailure(Call<String> call, Throwable t) {
+          progressBar.setVisibility(View.INVISIBLE);
+				}
+			});
+
+		}
 	}
 }

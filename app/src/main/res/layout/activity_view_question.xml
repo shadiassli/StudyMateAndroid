@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="studymate.mstechnologies.com.studymateandroid.Activities.ViewQuestionActivity"
+    android:background="@drawable/bg_gradiant"
+    >
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/linearlayout"
+      android:layout_marginBottom="8dp">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+
+        android:id="@+id/vq_user_image"
+        android:src="@drawable/ic_default_avatar"
+        />
+    <TextView
+        android:id="@+id/vq_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        />
+  </LinearLayout>
+
+  <TextView
+      android:id="@+id/vq_question_txt"
+      android:layout_below="@id/linearlayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      android:gravity="center_horizontal"
+      android:autoLink="all"
+      />
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="8dp"
+    android:layout_below="@id/vq_question_txt"
+    android:background="@drawable/bg_gradient_two"
+    android:layout_marginTop="8dp"
+    android:id="@+id/vq_divider"/>
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/vq_rv"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/vq_divider"
+      android:layout_above="@id/vq_ans_et"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="10dp"
+
+      />
+
+  <Button
+      android:id="@+id/vq_ans_btn"
+      android:layout_width="36dp"
+      android:layout_height="36dp"
+      android:background="@drawable/ic_send"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentBottom="true"
+      android:layout_marginBottom="16dp"
+      android:layout_marginEnd="16dp"
+      />
+  <EditText
+      android:id="@+id/vq_ans_et"
+      android:layout_width="wrap_content"
+      android:layout_height="36dp"
+      android:layout_alignParentStart="true"
+      android:layout_alignTop="@+id/vq_ans_btn"
+      android:layout_toStartOf="@+id/vq_ans_btn"
+      android:background="@drawable/rounded_edittext"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:ems="1"
+      android:hint="@string/type_down_an_answer"
+      android:textColor="@color/black"
+      android:padding="10dp"
+      />
+
+</RelativeLayout>

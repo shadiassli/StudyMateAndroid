@@ -4,11 +4,9 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.content.res.XmlResourceParser;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,8 +16,9 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.github.ybq.android.spinkit.style.FoldingCube;
 import com.valdesekamdem.library.mdtoast.MDToast;
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -28,13 +27,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import studymate.mstechnologies.com.studymateandroid.Activities.EditProfile;
+import studymate.mstechnologies.com.studymateandroid.Activities.CompleteProfileActivity;
 import studymate.mstechnologies.com.studymateandroid.Activities.MainActivity;
 import studymate.mstechnologies.com.studymateandroid.Models.Register;
 import studymate.mstechnologies.com.studymateandroid.R;
 import studymate.mstechnologies.com.studymateandroid.Retrofit.APIClientRetrofit;
 import studymate.mstechnologies.com.studymateandroid.Retrofit.APIinterfaceRetrofit;
-import studymate.mstechnologies.com.studymateandroid.Utils.CustomToast;
 import studymate.mstechnologies.com.studymateandroid.Utils.Utils;
 
 public class SignUp_Fragment extends Fragment implements OnClickListener,DatePickerDialog.OnDateSetListener {
@@ -48,7 +46,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener,DatePic
 	private  TextView login;
 	private  Button signUpButton;
 	private  CheckBox terms_conditions;
-
+  private ProgressBar progressBar;
 	public SignUp_Fragment() {
 
 	}
@@ -64,6 +62,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener,DatePic
 
 	// Initialize all views
 	private void initViews() {
+		 progressBar = (ProgressBar)view.findViewById(R.id.sign_up_spin_kit_pb);
 		fullName = (EditText) view.findViewById(R.id.fullName);
 		emailId = (EditText) view.findViewById(R.id.userEmailId);
 		mobileNumber = (EditText) view.findViewById(R.id.mobileNumber);
@@ -75,13 +74,13 @@ public class SignUp_Fragment extends Fragment implements OnClickListener,DatePic
 		terms_conditions = (CheckBox) view.findViewById(R.id.terms_conditions);
 
 		// Setting text selector over textviews
-		XmlResourceParser xrp = getResources().getXml(R.drawable.text_selector);
+		//XmlResourceParser xrp = getResources().getXml(R.drawable.text_selector);
 		try {
-			ColorStateList csl = ColorStateList.createFromXml(getResources(),
-					xrp);
+		//	ColorStateList csl = ColorStateList.createFromXml(getResources(),
+			///		xrp);
 
-			login.setTextColor(csl);
-			terms_conditions.setTextColor(csl);
+		//	login.setTextColor(csl);
+			//terms_conditions.setTextColor(csl);
 		} catch (Exception e) {
 		}
 	}
@@ -149,35 +148,40 @@ public class SignUp_Fragment extends Fragment implements OnClickListener,DatePic
 				|| getConfirmPassword.equals("")
 				|| getConfirmPassword.length() == 0)
 
-			new CustomToast().Show_Toast(getActivity(), view,
-					getResources().getString(R.string.AllFieldsRequired));
+			MDToast.makeText(getContext(),getResources().getString(R.string.AllFieldsRequired),MDToast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
 
-		// Check if email id valid or not
+
+			// Check if email id valid or not
 		else if (!m.find())
-			new CustomToast().Show_Toast(getActivity(), view,
-					getResources().getString(R.string.InvalidEmail));
+			MDToast.makeText(getContext(),getResources().getString(R.string.InvalidEmail),MDToast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
 
-		// Check if both password should be equal
+
+			// Check if both password should be equal
 		else if (!getConfirmPassword.equals(getPassword))
-			new CustomToast().Show_Toast(getActivity(), view,
-					getResources().getString(R.string.PasswordsDontMatch));
+			MDToast.makeText(getContext(),getResources().getString(R.string.PasswordsDontMatch),MDToast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
 
-		// Make sure user should check Terms and Conditions checkbox
+
+			// Make sure user should check Terms and Conditions checkbox
 		else if (!terms_conditions.isChecked())
-			new CustomToast().Show_Toast(getActivity(), view,
-					getResources().getString(R.string.SelectTermsAndConditions));
+			MDToast.makeText(getContext(),getResources().getString(R.string.SelectTermsAndConditions),MDToast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
 
-		// Else do signup or do your stuff
+
+			// Else do signup or do your stuff
 		else
 		{
 
+			FoldingCube fc = new FoldingCube();
+			progressBar.setIndeterminateDrawable(fc);
+			progressBar.setVisibility(View.VISIBLE);
 			Register register = new Register(getFullName,getEmailId,getPassword,getMobileNumber,finalBdate);
+			Log.d("REGISTER_RESPOSE__CODE","before register call");
 			Retrofit retrofit = APIClientRetrofit.getClient();
 			APIinterfaceRetrofit _register = retrofit.create(APIinterfaceRetrofit.class);
 			Call<String> registerCall = _register.Register(register);
 			registerCall.enqueue(new Callback<String>() {
 				@Override public void onResponse(Call<String> call, Response<String> response)
 				{
+
 
 					if(response.code()==200 || response.code()==204)
 				{
@@ -191,25 +195,27 @@ public class SignUp_Fragment extends Fragment implements OnClickListener,DatePic
 					editor.putInt("First_Login",1);
 					editor.putInt("Profile_Completed",0);
 					editor.apply();
-
-          if(response.body()!=null) {
-            Intent goToProfileEdit = new Intent(getActivity(), EditProfile.class);
-            goToProfileEdit.putExtra("Id", response.body());
-            goToProfileEdit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(goToProfileEdit);
-          }
-				}
+           progressBar.setVisibility(View.GONE);
+         if(response.body()!=null) {
+           Intent goToProfileEdit = new Intent(getActivity(), CompleteProfileActivity.class);
+           goToProfileEdit.putExtra("Id", response.body());
+           goToProfileEdit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+           startActivity(goToProfileEdit);
+           getActivity().finish();
+         }
+			}
 				else if(response.code()==302)
 					{
 						MDToast.makeText(getContext(),getResources().getString(R.string.UserAlreadyExists),4000,MDToast.TYPE_ERROR).show();
+						progressBar.setVisibility(View.INVISIBLE);
 					}
 				}
 
 				@Override public void onFailure(Call<String> call, Throwable t)
-        {
-          MDToast.makeText(getContext(),getResources().getString(R.string.NetworkConnectionFailure),MDToast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
-
-				}
+       {
+       	progressBar.setVisibility(View.INVISIBLE);
+         MDToast.makeText(getContext(),getResources().getString(R.string.NetworkConnectionFailure),MDToast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
+      	}
 			});
 		}
 

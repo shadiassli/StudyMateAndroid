@@ -1,5 +1,6 @@
 package studymate.mstechnologies.com.studymateandroid.Retrofit;
 
+import com.google.gson.GsonBuilder;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

@@ -3,14 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="studymate.mstechnologies.com.studymateandroid.Fragments.HomeFragment"
+    android:background="@drawable/bg_gradiant"
+    android:layoutDirection="ltr"
     >
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layoutDirection="ltr"
+      >
 
-<com.jcodecraeer.xrecyclerview.XRecyclerView
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/rv_questions_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:id="@+id/home_Recycler"
-    >
+    />
 
-</com.jcodecraeer.xrecyclerview.XRecyclerView>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/home_spin_kit_pb"
+        style="@style/SpinKitView.Large.FoldingCube"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        app:SpinKit_Color="@color/colorAccent" />
+  <android.support.design.widget.FloatingActionButton
+      android:id="@+id/addQbtn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/ic_add"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentBottom="true"
+      android:layout_margin="16dp"
+      android:padding="0dp"
+      />
+  </RelativeLayout>
 </FrameLayout>

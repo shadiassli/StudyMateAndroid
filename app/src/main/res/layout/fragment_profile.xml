@@ -3,13 +3,175 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="studymate.mstechnologies.com.studymateandroid.Fragments.ProfileFragment"
+    android:layoutDirection="ltr"
     >
-
-  <!-- TODO: Update blank fragment layout -->
-  <TextView
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:text="@string/hello_blank_fragment"
-      />
+      tools:context=".Activities.HomeActivity"
+      android:background="@drawable/bg_gradiant"
+      android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="405dp">
+      <LinearLayout
+          android:background="@drawable/bg_gradient_two"
+          android:layout_width="match_parent"
+          android:layout_height="350dp"
+          android:orientation="vertical">
 
+          <de.hdodenhof.circleimageview.CircleImageView
+              android:id="@+id/profile_user_image"
+              android:layout_marginTop="45dp"
+              android:layout_gravity="center_horizontal"
+              android:layout_width="150dp"
+              android:layout_height="150dp"
+              android:src="@drawable/ic_default_avatar"/>
+
+        <TextView
+            android:id="@+id/profile_user_name"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/studymate_user"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:textSize="21sp"/>
+      </LinearLayout>
+      <android.support.v7.widget.CardView
+          android:layout_width="400dp"
+          android:layout_height="120dp"
+          android:layout_centerHorizontal="true"
+          android:layout_marginTop="250dp"
+          app:cardBackgroundColor="@color/transparent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2">
+          <LinearLayout
+              android:gravity="center"
+              android:orientation="vertical"
+              android:layout_width="0dp"
+              android:layout_weight="1"
+              android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/answers"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:id="@+id/profile_ans_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:paddingTop="10dp"
+                android:textColor="@color/white"/>
+
+          </LinearLayout>
+          <LinearLayout
+              android:gravity="center"
+              android:orientation="vertical"
+              android:layout_width="0dp"
+              android:layout_weight="1"
+              android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/questions"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:id="@+id/profile_ques_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:paddingTop="10dp"
+                android:textColor="@color/white"/>
+
+          </LinearLayout>
+        </LinearLayout>
+
+      </android.support.v7.widget.CardView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginTop="45dp">
+      <LinearLayout
+          android:orientation="horizontal"
+          android:paddingLeft="25dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/email"/>
+        <TextView
+            android:id="@+id/profile_email_address"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:text="Studymate@gmail.com"/>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_marginTop="25dp"
+          android:orientation="horizontal"
+          android:paddingLeft="25dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/phone"/>
+        <TextView
+            android:id="@+id/profile_phone_number"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:text="+999 999 999"/>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_marginTop="25dp"
+          android:orientation="horizontal"
+          android:paddingLeft="25dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+      </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/profile_edit_btn"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_corner_button"
+        android:layout_marginTop="35dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit"
+        android:textStyle="bold"
+        />
+
+  </LinearLayout>
+</ScrollView>
 </FrameLayout>

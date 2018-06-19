@@ -3,13 +3,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="studymate.mstechnologies.com.studymateandroid.Fragments.SearchFragment"
+    android:background="@color/transparent"
+    android:layoutDirection="ltr"
     >
-
-  <!-- TODO: Update blank fragment layout -->
-  <TextView
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+  <EditText
+      android:id="@+id/seach_et"
+      android:layout_width="match_parent"
+      android:layout_height="40dp"
+      android:layout_marginTop="10dp"
+      android:ems="1"
+      android:hint="@string/search"
+      android:inputType="textAutoComplete"
+      android:layout_marginBottom="20dp"
+      android:layoutDirection="ltr"
+      />
+  <ImageView
+      android:id="@+id/search_srch_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBottom="@id/seach_et"
+      android:layout_alignRight="@id/seach_et"
+      android:layout_alignTop="@id/seach_et"
+      android:src="@drawable/ic_search_white"
+      android:padding="2dp" />
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/search_recycler"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:text="@string/hello_blank_fragment"
+      android:layout_below="@id/seach_et"
+      android:layoutDirection="ltr"
       />
 
+  <com.github.ybq.android.spinkit.SpinKitView
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:id="@+id/search_spin_kit_pb"
+      style="@style/SpinKitView.Large.FoldingCube"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:visibility="invisible"
+      app:SpinKit_Color="@color/colorAccent" />
+
+</RelativeLayout>
 </FrameLayout>

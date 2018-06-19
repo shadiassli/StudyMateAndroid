@@ -1,60 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    tools:context="studymate.mstechnologies.com.studymateandroid.Activities.EditProfile"
-    android:id="@+id/ep_SwipeRefreshLayout"
+    tools:context="studymate.mstechnologies.com.studymateandroid.Activities.EditProfileActivity"
+    android:background="@drawable/bg_gradiant"
+    android:layoutDirection="ltr"
     >
-  <RelativeLayout
+  <ScrollView
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      >
-
-  <TextView
-      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_centerHorizontal="true"
-      android:layout_marginTop="30dp"
-      android:text="@string/CompleteProfile"
-      android:textSize="20dp"
-      android:textStyle="bold|italic"
-      android:id="@+id/editProfileText"
-      android:textColor="@color/white"
-      />
+      android:id="@+id/scrollView">
 
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_below="@id/editProfileText"
-      android:layout_marginTop="18dp"
-      android:orientation="vertical"
-      android:layout_centerInParent="true"
-      android:layout_above="@id/ep_finishBtn"
-      >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/ep_profileImage"
-        android:layout_width="146dp"
-        android:layout_height="146dp"
-        android:src="@drawable/ic_default_avatar"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+      <de.hdodenhof.circleimageview.CircleImageView
+          android:id="@+id/ep_user_pic"
+          android:layout_width="150dp"
+          android:layout_height="150dp"
+          android:src="@drawable/ic_default_avatar"
+          android:layout_gravity="center_horizontal"
+          android:layout_marginTop="45dp"
+          />
 
-        />
-<LinearLayout
+
+        <LinearLayout
+            android:id="@+id/linearlayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:orientation="vertical"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="10dp"
+            >
+<EditText
+    android:id="@+id/ep_user_name_ET"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_gravity="center_horizontal"
-    android:gravity="center_horizontal"
-    android:layout_marginTop="50dp"
-    >
+    android:layout_height="40dp"
+    android:layout_marginTop="8dp"
+    android:textColor="@color/white"
+    android:hint="@string/user_name"
+    android:gravity="center"
+    android:background="@drawable/rounded_edittext"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_weight="1"
+    android:inputType="textPersonName"
+    />
+
+      <EditText
+          android:id="@+id/ep_phone_number_ET"
+          android:layout_width="match_parent"
+          android:layout_height="40dp"
+          android:layout_marginTop="8dp"
+          android:textColor="@color/white"
+          android:hint="@string/phone_number"
+          android:gravity="center"
+          android:background="@drawable/rounded_edittext"
+          android:layout_marginStart="20dp"
+          android:layout_marginEnd="20dp"
+          android:layout_weight="1"
+          android:layout_marginBottom="20dp"
+          android:inputType="phone"
+          />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+  </ScrollView>
+  <LinearLayout
+      android:id="@+id/depLinearLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_gravity="center_horizontal"
+      android:gravity="center_horizontal"
+      android:layout_below="@+id/scrollView"
+      android:weightSum="2"
+      >
 
     <TextView
         android:layout_width="wrap_content"
@@ -64,29 +98,30 @@
         android:textStyle="bold"
         android:layout_gravity="center"
         android:textColor="@color/white"
+        android:layout_weight="0.5"
         />
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/departmentSpinner"
-        android:layout_marginStart="8dp"
+        android:id="@+id/ep_departmentSpinner"
+        android:layout_marginStart="0dp"
         android:layout_gravity="center"
         android:visibility="visible"
         android:saveEnabled="true"
         />
-</LinearLayout>
+  </LinearLayout>
+  <LinearLayout
+      android:id="@+id/majorLinearLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_gravity="center_horizontal"
+      android:gravity="center_horizontal"
+      android:layout_marginTop="18dp"
+      android:layout_below="@id/depLinearLayout"
+      android:weightSum="2"
 
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-
-        >
+      >
 
     <TextView
         android:layout_width="wrap_content"
@@ -96,27 +131,58 @@
         android:textStyle="bold"
         android:layout_gravity="center"
         android:textColor="@color/white"
+        android:layout_weight="0.5"
         />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/majorSpinner"
+        android:id="@+id/ep_majorSpinner"
         android:layout_marginStart="8dp"
         android:layout_gravity="center"
         />
   </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_gravity="center_horizontal"
+      android:gravity="center_horizontal"
+      android:layout_below="@id/majorLinearLayout"
+      android:weightSum="2"
+      android:layout_marginTop="18dp"
+      >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/birthdate"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:layout_weight="0.5"
+        />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ep_birthDateBtn"
+        android:layout_marginStart="8dp"
+        android:layout_gravity="center"
+        android:src="@drawable/birthdate"
+        android:background="@color/transparent"
+        />
   </LinearLayout>
 
-
   <Button
+      android:id="@+id/ep_save_btn"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
-      android:text="@string/finish"
-      android:id="@+id/ep_finishBtn"
-      android:background="@color/background_color"
-      android:textColor="@color/white"
+      android:background="@color/transparent"
+      android:text="@string/save"
       />
-  </RelativeLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

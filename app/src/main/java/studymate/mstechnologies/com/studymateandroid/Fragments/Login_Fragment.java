@@ -1,11 +1,8 @@
 package studymate.mstechnologies.com.studymateandroid.Fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,8 +22,9 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.github.ybq.android.spinkit.style.FoldingCube;
 import com.valdesekamdem.library.mdtoast.MDToast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,15 +32,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import studymate.mstechnologies.com.studymateandroid.Activities.EditProfile;
+import studymate.mstechnologies.com.studymateandroid.Activities.CompleteProfileActivity;
+import studymate.mstechnologies.com.studymateandroid.Activities.HomeActivity;
 import studymate.mstechnologies.com.studymateandroid.Models.Login;
 import studymate.mstechnologies.com.studymateandroid.R;
 import studymate.mstechnologies.com.studymateandroid.Retrofit.APIClientRetrofit;
 import studymate.mstechnologies.com.studymateandroid.Retrofit.APIinterfaceRetrofit;
 import studymate.mstechnologies.com.studymateandroid.Utils.CustomToast;
 import studymate.mstechnologies.com.studymateandroid.Utils.Utils;
-
-import static android.provider.Contacts.SettingsColumns.KEY;
 
 public class Login_Fragment extends Fragment implements OnClickListener {
 	private static View view;
@@ -54,6 +51,7 @@ public class Login_Fragment extends Fragment implements OnClickListener {
 	private static LinearLayout loginLayout;
 	private static Animation shakeAnimation;
 	private static FragmentManager fragmentManager;
+	private ProgressBar progressBar;
 
 	public Login_Fragment() {
 
@@ -72,6 +70,7 @@ public class Login_Fragment extends Fragment implements OnClickListener {
 	private void initViews() {
 		fragmentManager = getActivity().getSupportFragmentManager();
 
+		progressBar=(ProgressBar)view.findViewById(R.id.log_in_spin_kit_pb);
 		emailid = (EditText) view.findViewById(R.id.login_emailid);
 		password = (EditText) view.findViewById(R.id.login_password);
 		loginButton = (Button) view.findViewById(R.id.loginBtn);
@@ -86,14 +85,14 @@ public class Login_Fragment extends Fragment implements OnClickListener {
 				R.anim.shake);
 
 		// Setting text selector over textviews
-		@SuppressLint("ResourceType") XmlResourceParser xrp = getResources().getXml(R.drawable.text_selector);
+	//	@SuppressLint("ResourceType") XmlResourceParser xrp = getResources().getXml(R.drawable.text_selector);
 		try {
-			ColorStateList csl = ColorStateList.createFromXml(getResources(),
-					xrp);
+			//ColorStateList csl = ColorStateList.createFromXml(getResources(),
+				//	xrp);
 
-			forgotPassword.setTextColor(csl);
-			show_hide_password.setTextColor(csl);
-			signUp.setTextColor(csl);
+			//forgotPassword.setTextColor(csl);
+		//	show_hide_password.setTextColor(csl);
+		//	signUp.setTextColor(csl);
 		} catch (Exception e) {
 		}
 	}
@@ -196,47 +195,59 @@ public class Login_Fragment extends Fragment implements OnClickListener {
 		else
 		{
 			Login login = new Login(getEmailId,getPassword);
+
+			FoldingCube fc = new FoldingCube();
+			progressBar.setIndeterminateDrawable(fc);
+			progressBar.setVisibility(View.VISIBLE);
 			Retrofit retrofit = APIClientRetrofit.getClient();
 			APIinterfaceRetrofit _login = retrofit.create(APIinterfaceRetrofit.class);
 			Call<Login> loginCall = _login.LoginUser(login);
 			loginCall.enqueue(new Callback<Login>() {
 				@Override public void onResponse(Call<Login> call, Response<Login> response)
 				{
-
 					if(response.code()==200 || response.code()==204)
           {
-            Log.d("OnResponse : ","Success");
+          	progressBar.setVisibility(View.INVISIBLE);
             MDToast.makeText(getContext(),getResources().getString(R.string.HoldOn),MDToast.LENGTH_LONG,MDToast.TYPE_SUCCESS).show();
             SharedPreferences settings = getContext().getSharedPreferences(Utils.Login_Preferences, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("Email", getEmailId);
             editor.putInt("Type",response.body().getType());
-						editor.putInt("Profile_Completed",0);
-            editor.putInt("Id",response.body().getId());
+					editor.putInt("Profile_Completed",0);
+           editor.putInt("Id",response.body().getId());
+           editor.putInt("First_Login",response.body().getFirstLogin());
+           editor.commit();
+           int firstLogin = response.body().getFirstLogin();
+           if(firstLogin == 1)
+           {
+             Intent goToProfileEdit = new Intent(getActivity(), CompleteProfileActivity.class);
+             goToProfileEdit.putExtra("Id",response.body().getId());
+             goToProfileEdit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+             startActivity(goToProfileEdit);
+             getActivity().finish();
 
-            editor.commit();
-
-            int firstLogin = settings.getInt("First_Login",1);
-            if(firstLogin == 1)
-            {
-              Intent goToProfileEdit = new Intent(getActivity(), EditProfile.class);
-              goToProfileEdit.putExtra("Id",response.body().getId());
-              goToProfileEdit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-              startActivity(goToProfileEdit);
-
-            }
-
-          }
-          else if (response.code()==404)
-          {
-            new CustomToast().Show_Toast(getActivity(),view,getResources().getString(R.string.NoSuchUser));
-          }
+           }
+           else
+					 {
+						 Intent goToHomePage = new Intent(getActivity(), HomeActivity.class);
+						 goToHomePage.putExtra("Id",response.body().getId());
+						 goToHomePage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+						 startActivity(goToHomePage);
+						 getActivity().finish();
+					 }
+        }
+         else if (response.code()==404)
+         {
+         	progressBar.setVisibility(View.INVISIBLE);
+           new CustomToast().Show_Toast(getActivity(),view,getResources().getString(R.string.NoSuchUser));
+        }
 
 				}
 
-				@Override public void onFailure(Call<Login> call, Throwable t)
-        {
-          new CustomToast().Show_Toast(getActivity(),view,getResources().getString(R.string.NetworkConnectionFailure));
+			@Override public void onFailure(Call<Login> call, Throwable t)
+       {
+       MDToast.makeText(getActivity(),getResources().getString(R.string.NetworkConnectionFailure),MDToast.LENGTH_LONG,MDToast.TYPE_ERROR).show();
+       progressBar.setVisibility(View.INVISIBLE);
 				}
 			});
 

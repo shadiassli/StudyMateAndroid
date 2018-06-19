@@ -4,12 +4,15 @@ package studymate.mstechnologies.com.studymateandroid.Models;
  * Created by xboxp on 3/4/2018.
  */
 
-public class Login
-{
+
+public class Login {
+
+
   private int id;
   private String email;
   private String password;
   private int type;
+  private int firstLogin;
 
   public Login()
   {
@@ -47,6 +50,12 @@ public class Login
   }
   public void setType(int type) {
     this.type = type;
+  }
+  public int getFirstLogin() {
+    return firstLogin;
+  }
+  public void setFirstLogin(int firstLogin) {
+    this.firstLogin = firstLogin;
   }
 
 
